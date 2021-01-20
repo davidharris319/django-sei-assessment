@@ -5,21 +5,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/purecss@1.0.0/build/pure-min.css"
-      integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
     <title>Wacky Widgets</title>
   </head>
   <body>
     <h1>Wacky Widgets</h1>
 
-    {% if widget_list|length == 0 %}
+    {% if widgets %}
+    <table class="pure-table pure-table-striped">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Quantity</th>
+          <th>Delete</th>
+        </tr>
+        {% for widget in widgets %}
+        <tr>
+          <td>{{widget.description }}</td>
+          <td>{{widget.quantity }}</td>
+          <td><a href="{% url 'widget_delete' widget.id %}">X</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %} 
     <h3>No Widgets Exist</h3>
-    {% else %} {% endif %}
+    {% endif %}
     <hr />
+    <h4>Add Widget</h4>
+    <form  method="post" action="" class="pure-form" >
+      {% csrf_token %}
+      {{ widget_form.as_p }}
+      <input type="submit" class="pure-button" value="ADD WIDGET">
+    </form>
   </body>
 </html>
